@@ -1,4 +1,6 @@
 import time
+from flask import Flask, render_template, request, jsonify, send_from_directory
+from flask_cors import CORS
 from rpi_ws281x import PixelStrip, Color
 
 # LED strip configuration:
@@ -17,6 +19,20 @@ def solid(strip, color):
         strip.setPixelColor(i, color)
     strip.show()
 
+app = Flask(__name__)
+CORS(app)
+
+@app.route('/red')
+def red():
+    solid(strip, Color(255, 0, 0))
+    time.sleep(1)
+    solid(strip, Color(0,0,0))
+
+@app.route('/green')
+def green():
+    solid(strip, Color(255, 0, 0))
+    time.sleep(1)
+    solid(strip, Color(0,0,0))
 
 # Main program logic follows:
 if __name__ == '__main__':
@@ -24,11 +40,4 @@ if __name__ == '__main__':
     strip = PixelStrip(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL)
     # Intialize the library (must be called once before other functions).
     strip.begin()
-
-    print('Press Ctrl-C to quit.')
-
-    while True:
-        solid(strip, Color(255, 0, 0))
-        time.sleep(1)
-        solid(strip, Color(0, 255, 0))
-        time.sleep(1)
+    app.run(debug=True, host='localhost')
