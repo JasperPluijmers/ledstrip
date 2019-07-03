@@ -31,3 +31,4 @@ if __name__ == '__main__':
         solid(strip, Color(255, 0, 0))
         time.sleep(1)
         solid(strip, Color(0, 255, 0))
+        time.sleep(1)
